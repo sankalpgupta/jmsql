@@ -1,4 +1,4 @@
 jmsql
 =====
 
-A smarter console on top of mysql client
+A smarter mysql console
