@@ -17,6 +17,10 @@ public class Jconsole {
         jcd.setCurrentCommand(command);
     }
 
+    private static String getPrefix(){
+        return PrefixUtils.getPrefix();
+    }
+    
     public static Jconsole getInstance() {
         if (jconsole == null) {
             jconsole = new Jconsole();
@@ -27,7 +31,7 @@ public class Jconsole {
     public void startCommandPrompt() {
         LOG.info("String Jconsole");
         System.out.println("Welcome to mysql Jconsole :)");
-        System.out.print(">");
+        System.out.print(getPrefix());
     }
 
     public static void eraseLastCharacter() {
@@ -67,7 +71,7 @@ public class Jconsole {
 
     public static void newCommand() {
         getInstance().jcd.saveCommand();
-        System.out.print(">" + getCurrentCommandString());
+        System.out.print(getPrefix()+ getCurrentCommandString());
         getInstance().jcd.setCurrentCursorPosition(getCurrentCommandString().length());
     }
 
@@ -184,11 +188,14 @@ public class Jconsole {
         for(int i=0;i<length;i++){
             System.out.print("\b \b");
         }
-        System.out.print("\b \b");
+        int prefixLength=getPrefix().length();
+        for(int i=0;i<prefixLength;i++){
+            System.out.print("\b \b");
+        }
     }
 
     public static void printCurrentCommand() {
-        System.out.print(">"+Jconsole.getCurrentCommand());
+        System.out.print(getPrefix()+Jconsole.getCurrentCommand());
         moveCursorToCursorPosition();
     }
 }

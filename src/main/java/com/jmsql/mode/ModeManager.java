@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jmsql.characters.ICharacterClass;
+import com.jmsql.starter.ProcessWideContext;
 
 public abstract class ModeManager {
 

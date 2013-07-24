@@ -44,9 +44,9 @@ public class CharacterEnter implements ICharacterClass {
     @Override
     public void keyPressed(int c) {
         try {
+            System.out.println();
             String mysqlCommandToExecute = getCommandToExecute(Jconsole.getCurrentCommandString());
             LOG.info("command to be executed:{}", mysqlCommandToExecute);
-            System.out.println();
             ProcessBuilder pb = new ProcessBuilder("/bin/sh", "-c", " echo '" + mysqlCommandToExecute + "' | mysql -A -t -u"+DbUtils.getUsername()+" -p"+DbUtils.getPassword()+" -P"+DbUtils.getDbPort()+" -h"+DbUtils.getDbIp()+" "+DbUtils.getDbName());
             System.out.print(getOutput(pb.start()));
         } catch (IOException e2) {
@@ -72,7 +72,9 @@ public class CharacterEnter implements ICharacterClass {
             else if(firstWord.trim().equalsIgnoreCase("use")){
                 if(currentCommandArray.length==2){
                     DbUtils.setDbName(currentCommandArray[1]);
+                    System.out.println("connecting...");
                     DbUtils.init();
+                    System.out.println("connected.");
                     MetadataProcessor.init();
                 }
             }

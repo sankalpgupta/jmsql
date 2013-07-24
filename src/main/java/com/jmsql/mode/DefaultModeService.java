@@ -31,6 +31,11 @@ public class DefaultModeService extends AbstractModeService {
 
     private static DefaultModeService dms;
 
+    @Override
+    public String getModeName(){
+        return "DMS";
+    }
+    
     public static DefaultModeService getInstance() {
         if (dms == null) {
             dms = new DefaultModeService();
