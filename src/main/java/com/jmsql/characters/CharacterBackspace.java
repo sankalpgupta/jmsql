@@ -44,13 +44,7 @@ public class CharacterBackspace implements ICharacterClass {
         if(currentPosition>0 && length>0){
             System.out.print("\b \b");
             LOG.info("to delete character at position:"+(currentPosition-1)+" for command:"+Jconsole.getCurrentCommandString()+" length:"+length);
-            Jconsole.getCurrentCommand().getBuilderCommand().deleteCharAt(currentPosition-1);
-            Jconsole.decreaseCurrentCursorPosition();   
-            if(currentPosition<length){
-                System.out.print(Jconsole.getCurrentCommandString().substring(Jconsole.getCurrentCursorPosition()));
-                System.out.print(" \b");
-                Jconsole.moveCursorToCursorPosition();
-            }
+            Jconsole.deleteCharAtCurrentPosition();
         }
     }
 

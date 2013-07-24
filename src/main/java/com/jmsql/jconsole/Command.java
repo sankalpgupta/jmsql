@@ -27,7 +27,7 @@ public class Command {
         this.command = new StringBuilder(command);
     }
 
-    public StringBuilder getBuilderCommand() {
+    StringBuilder getBuilderCommand() {
         return command;
     }
     

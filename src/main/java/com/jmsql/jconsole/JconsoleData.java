@@ -15,6 +15,8 @@ public class JconsoleData {
     private Command currentCommand;
     private int currentIndex=0;
     
+    private int cursorPosition=0;
+    
     public List<Command> getCommandList() {
         return commandList;
     }
@@ -35,6 +37,22 @@ public class JconsoleData {
         this.currentCommand = currentCommand;
     }
 
+    public int getCurrentCursorPosition() {
+        return cursorPosition;
+    }
+    
+    public void setCurrentCursorPosition(int position) {
+        cursorPosition=position;
+    }
+
+    public void decreaseCurrentCursorPosition() {
+        cursorPosition--;
+    }
+
+    public void increaseCurrentCursorPosition() {
+        cursorPosition++;
+    }
+    
     public void saveCommand() {
         LOG.info("save command:"+currentCommand.toString()+" current Index:"+currentIndex+" current List Size:"+commandList.size());
         if("".equalsIgnoreCase(currentCommand.getCommand().toString().trim()) || (!commandList.isEmpty() && commandList.get(commandList.size()-1).toString().equalsIgnoreCase(currentCommand.getCommand()))){

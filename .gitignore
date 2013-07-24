@@ -7,3 +7,6 @@
 dependency-reduced-pom.xml
 .project
 target/
+.classpath
+.settings/
+bin/

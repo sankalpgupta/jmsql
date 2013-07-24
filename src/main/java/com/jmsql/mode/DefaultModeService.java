@@ -55,19 +55,7 @@ public class DefaultModeService extends AbstractModeService {
                 characterClass.keyPressed(c);
             }
         } else {
-           // int length=Jconsole.getCurrentCommandString().length();
-            System.out.print(Character.toChars(c));
-            if(Jconsole.getCurrentCursorPosition()==Jconsole.getCurrentCommandString().length()){
-                
-                Jconsole.getCurrentCommand().getBuilderCommand().append(Character.toChars(c));
-                Jconsole.setCurrentCursorPosition(Jconsole.getCurrentCommandString().length());
-            }else{
-                Jconsole.getCurrentCommand().getBuilderCommand().insert(Jconsole.getCurrentCursorPosition(), Character.toChars(c));
-                Jconsole.increaseCurrentCursorPosition();
-                System.out.print(Jconsole.getCurrentCommandString().substring(Jconsole.getCurrentCursorPosition()));
-                Jconsole.moveCursorToCursorPosition();
-            }
-            
+            Jconsole.insertAtCurrentPosition(Character.toChars(c));
             LOG.info("current command string:{}",Jconsole.getCurrentCommandString());
             LOG.info("cursor position:{}",Jconsole.getCurrentCursorPosition());
         }

@@ -50,13 +50,11 @@ public class CharacterDirectionKeys implements ICharacterClass {
             ModeManager.deactivateKey();
             if (c == 68) {
                 if (Jconsole.getCurrentCursorPosition() > 0) {
-                    Jconsole.decreaseCurrentCursorPosition();
-                    System.out.print(tempString);
+                    Jconsole.moveCursorLeft();
                 }
             } else if (c == 67) {
                 if (Jconsole.getCurrentCursorPosition() < Jconsole.getCurrentCommandString().length()) {
-                    Jconsole.increaseCurrentCursorPosition();
-                    System.out.print(tempString);
+                    Jconsole.moveCursorRight();
                 }
             } else if (c == 65) {
                 Jconsole.prevCommand();

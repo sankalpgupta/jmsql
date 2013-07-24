@@ -45,27 +45,20 @@ public class CharacterTAB implements ICharacterClass {
       /*Jconsole.replaceLastWord(" ",replaceLastWord);*/
       String lastWord=Jconsole.lastWord(" ");
       LOG.info("Last word:"+lastWord);
-      
       Set<String> processedWords = MetadataProcessor.getMappers(lastWord);
-      int length=Jconsole.getCurrentCommandString().length();
-      for(int i=0;i<length;i++){
-          System.out.print("\b \b");
-      }
-      System.out.print("\b \b");
+      Jconsole.wipeCommand();
       if(processedWords.size()==1){
-          int cursorPosition=Jconsole.replaceLastWord(" ",processedWords.iterator().next());
-          System.out.print(">"+Jconsole.getCurrentCommand());
-          Jconsole.setCurrentCursorPosition(cursorPosition);
-          Jconsole.moveCursorToCursorPosition();
+          Jconsole.replaceLastWord(" ",processedWords.iterator().next());
+          Jconsole.printCurrentCommand();
       }
       else if(processedWords.size()>1){
           for(String suggestedName:processedWords){
               System.out.print(suggestedName+"\t");
           }
           System.out.println();
-          System.out.print(">"+Jconsole.getCurrentCommand());
+          Jconsole.printCurrentCommand();
       }else{
-          System.out.print(">"+Jconsole.getCurrentCommand());
+          Jconsole.printCurrentCommand();
       }
     }
 
