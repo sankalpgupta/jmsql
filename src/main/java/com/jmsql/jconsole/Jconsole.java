@@ -129,6 +129,7 @@ public class Jconsole {
 
     //TODO throw exception when cannot delete due to out of bound
     public static void deleteCharAtCurrentPosition() {
+        System.out.print("\b \b");
         int currentPosition = getInstance().jcd.getCurrentCursorPosition();
         Jconsole.getCurrentCommand().getBuilderCommand().deleteCharAt(currentPosition - 1);
         Jconsole.getInstance().jcd.decreaseCurrentCursorPosition();
