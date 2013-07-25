@@ -1,10 +1,3 @@
-/*
- *  Copyright 2013 Jasper Infotech (P) Limited . All Rights Reserved.
- *  JASPER INFOTECH PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
- *  
- *  @version     1.0, 28-Jan-2013
- *  @author abhinav singhal
- */
 package com.jmsql.starter;
 
 import org.apache.commons.cli.CommandLine;
