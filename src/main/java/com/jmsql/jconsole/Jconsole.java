@@ -30,7 +30,6 @@ public class Jconsole {
 
     public void startCommandPrompt() {
         LOG.info("String Jconsole");
-        System.out.println("Welcome to mysql Jconsole :)");
         System.out.print(getPrefix());
     }
 

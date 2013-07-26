@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public abstract class DbUtils {
     private static Connection connection;
     private static String     username;
@@ -16,10 +19,15 @@ public abstract class DbUtils {
     private static String     dbIp;
     private static String     dbPort;
 
+    private static final Logger LOG = LoggerFactory.getLogger(DbUtils.class);
+
     public static void init(){
         try {
             //System.out.println("Username:"+username+" password:"+password+" dbName:"+dbName+" dbIp:"+dbIp+" dbPort:"+dbPort);
+            long startTime = System.currentTimeMillis();
             connection = DriverManager.getConnection("jdbc:mysql://"+dbIp+":"+dbPort+"/"+dbName+"?autoReconnect=true",username, password);
+            long estimatedTime = System.currentTimeMillis() - startTime;
+            LOG.debug("Time taken in setting connection:{}ms",estimatedTime);
         } catch (SQLException e) {
             System.out.println("Connection can not be made. Exiting...");
             System.exit(6);
@@ -32,6 +40,16 @@ public abstract class DbUtils {
         ResultSet rs = db.getTables(null, null, "%", new String[] { "TABLE" });
         while (rs.next()) {
             tables.add(rs.getString(3));
+        }
+        return tables;
+    }
+    
+    public static Set<String> getAllColumns(Connection connection) throws SQLException {
+        Set<String> tables = new HashSet<String>();
+        DatabaseMetaData db = connection.getMetaData();
+        ResultSet rs = db.getColumns(null, null, "%", "%");
+        while (rs.next()) {
+            tables.add(rs.getString(3)+":"+rs.getString(4));
         }
         return tables;
     }

@@ -211,6 +211,7 @@ public class CommandBuilder {
     }
     private static void consoleInit() {
         mainThread = Thread.currentThread();
+        System.out.println("Welcome to mysql Jconsole :)");
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
