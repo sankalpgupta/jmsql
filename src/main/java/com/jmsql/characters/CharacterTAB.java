@@ -90,13 +90,16 @@ public class CharacterTAB implements ICharacterClass {
             System.out.println(ConsoleConstant.ANSI_RESET);
             for (String suggestedName : processedWords) {
                 if (counter == 0) {
-                    System.out.print(ConsoleConstant.ANSI_RED + suggestedName + "\t" + ConsoleConstant.ANSI_RESET);
+                    System.out.print(suggestedName + "\t");
                     counter = 1;
                 } else if (counter == 1) {
-                    System.out.print(ConsoleConstant.ANSI_GREEN + suggestedName + "\t" + ConsoleConstant.ANSI_RESET);
+                    System.out.print(ConsoleConstant.ANSI_GREEN + suggestedName + ConsoleConstant.ANSI_RESET+ "\t" );
                     counter = 2;
-                } else {
+                }/*else if (counter == 2) {
                     System.out.print(suggestedName + "\t");
+                    counter = 3;
+                }  */else {
+                    System.out.print(ConsoleConstant.ANSI_RED + suggestedName +ConsoleConstant.ANSI_RESET+ "\t" );
                     counter = 0;
                 }
 
