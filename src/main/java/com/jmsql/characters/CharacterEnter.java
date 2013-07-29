@@ -48,13 +48,31 @@ public class CharacterEnter implements ICharacterClass {
             String mysqlCommandToExecute = getCommandToExecute(Jconsole.getCurrentCommandString());
             LOG.info("command to be executed:{}", mysqlCommandToExecute);
             ProcessBuilder pb = new ProcessBuilder("/bin/sh", "-c", " echo '" + mysqlCommandToExecute + "' | mysql -A -t -u"+DbUtils.getUsername()+" -p"+DbUtils.getPassword()+" -P"+DbUtils.getDbPort()+" -h"+DbUtils.getDbIp()+" "+DbUtils.getDbName());
-            System.out.print(getOutput(pb.start()));
+            String result=getOutput(pb.start());
+            result = getEmptyOutputResult(mysqlCommandToExecute, result);
+            System.out.print(result);
         } catch (IOException e2) {
             e2.printStackTrace();
         } catch (InterruptedException e2) {
             e2.printStackTrace();
         }
         Jconsole.newCommand();
+    }
+
+    private String getEmptyOutputResult(String mysqlCommandToExecute, String result) {
+        if("".equals(result.trim())){
+            String firstWord=mysqlCommandToExecute.split(" ")[0];
+            if("select".equalsIgnoreCase(firstWord)){
+                result="Empty Set\n";
+            }else if("update".equalsIgnoreCase(firstWord)){
+                result="Updated.\n";
+            }else if("delete".equalsIgnoreCase(firstWord)){
+                result="Deleted.\n";
+            }else if("insert".equalsIgnoreCase(firstWord)){
+                result="Inserted.\n";
+            }
+        }
+        return result;
     }
 
     private String getCommandToExecute(String currentCommandString) {
