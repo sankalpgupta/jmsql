@@ -47,18 +47,33 @@ public class CharacterTAB implements ICharacterClass {
         String lastWord = Jconsole.lastWord(" ");
         LOG.info("Last word:" + lastWord);
         if(lastWord.charAt(lastWord.length()-1)=='+'){
-            lastWord=lastWord.substring(0, lastWord.length()-1);
-            if(MetadataProcessor.isTable(lastWord)){
-                String csvColumn="";
-                for(String column:MetadataProcessor.getColumn(lastWord, null)){
-                    csvColumn+=("".equals(csvColumn)?"":",")+column;
-                }
-                Jconsole.wipeCommand();
-                Jconsole.replaceLastWord(" ", "insert into "+lastWord+" ("+csvColumn+") values ();");
-                Jconsole.printCurrentCommand();
-            }
+            printInsertStatement(lastWord);
+        }else if(lastWord.charAt(lastWord.length()-1)=='~'){
+            printUpdateStatement(lastWord);
         }else{
             wordCompletion(lastWord);
+        }
+    }
+
+    private void printUpdateStatement(String lastWord) {
+        lastWord=lastWord.substring(0, lastWord.length()-1);
+        if(MetadataProcessor.isTable(lastWord)){
+            Jconsole.wipeCommand();
+            Jconsole.replaceLastWord(" ", "update set "+lastWord+" "+lastWord+".");
+            Jconsole.printCurrentCommand();
+        }
+    }
+
+    private void printInsertStatement(String lastWord) {
+        lastWord=lastWord.substring(0, lastWord.length()-1);
+        if(MetadataProcessor.isTable(lastWord)){
+            String csvColumn="";
+            for(String column:MetadataProcessor.getColumn(lastWord, null)){
+                csvColumn+=("".equals(csvColumn)?"":",")+column;
+            }
+            Jconsole.wipeCommand();
+            Jconsole.replaceLastWord(" ", "insert into "+lastWord+" ("+csvColumn+") values ();");
+            Jconsole.printCurrentCommand();
         }
     }
 
