@@ -16,3 +16,4 @@ Features:
 4. TABLE-NAME ENTER  to get description of table
 5. TABLE-NAME NUMBER N to get first N rows of TABLE (suitable to see content of domain tables)
 6. TABLE-NAME ADDITIONAL-QUERY will prepend select * from in the query
+7. 
