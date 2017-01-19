@@ -44,6 +44,16 @@ public abstract class DbUtils {
         return tables;
     }
     
+    public static Set<String> getImportedKeys(Connection connection,String tableName) throws SQLException {
+        Set<String> tables = new HashSet<String>();
+        DatabaseMetaData db = connection.getMetaData();
+        ResultSet rs = db.getImportedKeys(null, null, tableName);
+        while (rs.next()) {
+            tables.add(rs.getString(3));
+        }
+        return tables;
+    }
+    
     public static Set<String> getAllColumns(Connection connection) throws SQLException {
         Set<String> tables = new HashSet<String>();
         DatabaseMetaData db = connection.getMetaData();

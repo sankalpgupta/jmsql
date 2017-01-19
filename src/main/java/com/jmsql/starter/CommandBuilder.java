@@ -110,13 +110,14 @@ public class CommandBuilder {
             setTerminalToCBreak();
             Jconsole.getInstance().startCommandPrompt();
             while (true) {
-                if (System.in.available() != 0) {
+                while (System.in.available() != 0) {
                     int c = System.in.read();
                     LOG.info("You pressed:" + c + "(" + (char) c + ")");
                     ProcessWideContext.getInstance().getModeService().keyPressed(c);
                     LOG.info("Pressed:" + c + "(" + (char) c + ") Command:" + Jconsole.getCurrentCommandString() + " length:" + Jconsole.getCurrentCommandString().length()
                             + " cursor Position:" + Jconsole.getCurrentCursorPosition());
                 }
+                Thread.sleep(100);
             }
         } catch (IOException e) {
             System.err.println("IOException");

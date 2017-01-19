@@ -1,9 +1,9 @@
 package com.jmsql.characters;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
-import javax.annotation.processing.Processor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,6 +85,15 @@ public class CharacterTAB implements ICharacterClass {
         Set<String> processedWords = new HashSet<String>();
         String lastWordDelimiter = "";
         String actualLastWord=lastWord;
+        int wordOptionNumber=1;
+        boolean chooseOne=false;
+        if(lastWord.matches(".*[0-9]$")){
+        	String[] parts = lastWord.split("(?=\\d+$)", 2);
+        	LOG.info("parts[0]"+parts[0]+" parts[1]"+parts[1]);
+        	lastWord=parts[0];
+        	wordOptionNumber=Integer.parseInt(parts[1]);
+        	chooseOne=true;
+        }
         if (lastWord.contains(".")) {
             String[] splittedLastWord = lastWord.split("\\.");
             LOG.debug("length of splitted last word:" + splittedLastWord.length);
@@ -124,13 +133,22 @@ public class CharacterTAB implements ICharacterClass {
         }
 
         Jconsole.wipeCommand();
+        LOG.info("All processed words:{}",processedWords);
+        if(chooseOne){
+        	List<String> newProcessedWords=new ArrayList<String>(processedWords);
+        	processedWords=new HashSet<String>();
+        	processedWords.add(newProcessedWords.get(wordOptionNumber-1));
+        	LOG.info("new processedWords:{}",processedWords);
+        }
         if (processedWords.size() == 1) {
             Jconsole.replaceLastWord(lastWordDelimiter, processedWords.iterator().next());
             Jconsole.printCurrentCommand();
         } else if (processedWords.size() > 1) {
             int counter = 0;
             System.out.println(ConsoleConstant.ANSI_RESET);
+            int processedWordCounter=1;
             for (String suggestedName : processedWords) {
+            	suggestedName+="("+(processedWordCounter++)+")";
                 if (counter == 0) {
                     System.out.print(suggestedName + "\t");
                     counter = 1;

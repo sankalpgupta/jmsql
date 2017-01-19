@@ -22,6 +22,7 @@ public abstract class MetadataProcessor {
         nickNameMapper = new HashMap<String, Set<String>>();
         columnMap = new HashMap<String, Set<String>>();
         getTables();
+        getImportedKeysFromDatabase();
         Thread t = new Thread() {
             public void run() {
                 MetadataProcessor.getColumns();
@@ -32,6 +33,21 @@ public abstract class MetadataProcessor {
     }
 
     private static void getTables() {
+        long startTime = System.currentTimeMillis();
+        tableNames = new ArrayList<String>();
+        try {
+            Set<String> tables = DbUtils.getAllTables(DbUtils.getConnection());
+            for (String tableName : tables) {
+                MetadataProcessor.process(tableName);
+            }
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+        long estimatedTime = System.currentTimeMillis() - startTime;
+        LOG.debug("Time taken in hashing tables names:{}ms", estimatedTime);
+    }
+    
+    private static void getImportedKeysFromDatabase() {
         long startTime = System.currentTimeMillis();
         tableNames = new ArrayList<String>();
         try {
