@@ -21,8 +21,7 @@ public abstract class MetadataProcessor {
     public static void init() {
         nickNameMapper = new HashMap<String, Set<String>>();
         columnMap = new HashMap<String, Set<String>>();
-        getTables();
-        getImportedKeysFromDatabase();
+        getTablesFromDatabase();
         Thread t = new Thread() {
             public void run() {
                 MetadataProcessor.getColumns();
@@ -32,22 +31,7 @@ public abstract class MetadataProcessor {
         //getColumns();
     }
 
-    private static void getTables() {
-        long startTime = System.currentTimeMillis();
-        tableNames = new ArrayList<String>();
-        try {
-            Set<String> tables = DbUtils.getAllTables(DbUtils.getConnection());
-            for (String tableName : tables) {
-                MetadataProcessor.process(tableName);
-            }
-        } catch (SQLException e1) {
-            e1.printStackTrace();
-        }
-        long estimatedTime = System.currentTimeMillis() - startTime;
-        LOG.debug("Time taken in hashing tables names:{}ms", estimatedTime);
-    }
-    
-    private static void getImportedKeysFromDatabase() {
+    private static void getTablesFromDatabase() {
         long startTime = System.currentTimeMillis();
         tableNames = new ArrayList<String>();
         try {
@@ -92,29 +76,23 @@ public abstract class MetadataProcessor {
         //System.out.println("adding:"+nickName+" for:"+mapperValue);
         nickNameMapper.get(nickName).add(mapperValue);
     }
+    
+    
 
-    public static Set<String> getMappers(String nickName) {
-        Set<String> result = new HashSet<String>();
-        if(nickName!=null){
-            if (nickNameMapper.containsKey(nickName)) {
-                result.addAll(nickNameMapper.get(nickName));
-            }
-        }
-        if(nickName==null || result.isEmpty()){
-            for(String tableName:tableNames){
-                if(tableName.startsWith(nickName)){
-                    result.add(tableName);
-                }
-            }
-        }
-        return result;
+    public static Map<String, Set<String>> getNickNameMapper() {
+        return nickNameMapper;
+    }
+
+
+    public static List<String> getTableNames() {
+        return tableNames;
     }
 
     public static boolean isTable(String tableName) {
         return tableNames.contains(tableName.toLowerCase());
     }
 
-    public static Set<String> getColumn(String tableName, String prefix) {
+    public static Set<String> getColumns(String tableName, String prefix) {
         Set<String> result = new HashSet<String>();
         if (prefix == null) {
             if (columnMap.containsKey(tableName)) {
@@ -148,5 +126,18 @@ public abstract class MetadataProcessor {
         if (!"".equals(nickName)) {
             addName(nickName, name);
         }
+    }
+
+    public static List<ForiegnKeyRelation> getForeignKeys(Set<String> tableSet) throws SQLException {
+        List<ForiegnKeyRelation> result=new ArrayList<>();
+        for (String table : tableSet) {
+            List<ForiegnKeyRelation> foreignKeys = DbUtils.getImportedKeys(DbUtils.getConnection(), table);
+            for(ForiegnKeyRelation fk:foreignKeys){
+                if (tableSet.contains(fk.getPrimaryTable())) {
+                    result.add(fk);
+                }
+            }
+        }
+        return result;
     }
 }

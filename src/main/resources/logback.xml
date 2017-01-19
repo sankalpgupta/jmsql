@@ -10,10 +10,10 @@
     </appender>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <prudent>false</prudent>
-        <file>/tmp/jsconsole/process.log</file>
+        <file>${user.home}/.jmsql/process.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>/tmp/jsconsole/process.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${user.home}/.jmsql/process.%d{yyyy-MM-dd}.log</fileNamePattern>
 
             <!-- keep 30 days' worth of history -->
             <maxHistory>30</maxHistory>

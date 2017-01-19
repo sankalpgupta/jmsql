@@ -5,7 +5,9 @@ import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -44,12 +46,12 @@ public abstract class DbUtils {
         return tables;
     }
     
-    public static Set<String> getImportedKeys(Connection connection,String tableName) throws SQLException {
-        Set<String> tables = new HashSet<String>();
+    public static List<ForiegnKeyRelation> getImportedKeys(Connection connection,String tableName) throws SQLException {
+        List<ForiegnKeyRelation> tables = new ArrayList<ForiegnKeyRelation>();
         DatabaseMetaData db = connection.getMetaData();
         ResultSet rs = db.getImportedKeys(null, null, tableName);
         while (rs.next()) {
-            tables.add(rs.getString(3));
+            tables.add(new ForiegnKeyRelation(rs.getString(7), rs.getString(8), rs.getString(3), rs.getString(4)));
         }
         return tables;
     }
@@ -62,6 +64,16 @@ public abstract class DbUtils {
             tables.add(rs.getString(3)+":"+rs.getString(4));
         }
         return tables;
+    }
+    
+    public static Set<String> getColumnsByTable(Connection connection,String tableName) throws SQLException {
+        Set<String> columns = new HashSet<String>();
+        DatabaseMetaData db = connection.getMetaData();
+        ResultSet rs = db.getColumns(null, null, tableName, "%");
+        while (rs.next()) {
+            columns.add(rs.getString(4));
+        }
+        return columns;
     }
 
     public static Connection getConnection() {
